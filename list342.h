@@ -1,6 +1,7 @@
 #ifndef LIST_342_H_
 #define LIST_342_H_
 #include <iostream>
+#include <fstream>
 #include <vector>
 using namespace std;
 
@@ -67,6 +68,13 @@ template <class T>
 List342<T>::~List342()
 {
 	DeleteList();
+}
+
+/* ACTION IMPLEMENTATION */
+template <class T> 
+bool List342<T>::BuildList(string file_name)
+{
+
 }
 
 

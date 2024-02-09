@@ -1,6 +1,6 @@
 // program3_description_code.cpp : This file contains the 'main' function. Program execution begins and ends there.
 
-/*
+
 #include <iostream>
 #include "list342.h"
 #include "child.h"
@@ -28,56 +28,55 @@ int main()
 	class1.Insert(&c5);
 	class1.Insert(&c6);
 	class1.Insert(&c5);
-	cout << "class1: " << class1 << endl;
+	cout << "class1: " << class1 << endl; // Line 1 on output.txt
 
 	if (!class1.Insert(&c1))
 	{
-		cout << "ERROR::: Duplicate" << endl;
+		cout << "ERROR::: Duplicate" << endl; // Line 2 on output.txt
 	}
 	class2.Insert(&c4);
 	class2.Insert(&c5);
 	class2.Insert(&c6);
 	class2.Insert(&c7);
 	class2.Insert(&c10);
-	cout << "Class2: " << class2 << endl;
+	cout << "Class2: " << class2 << endl; // Line 3 on output.txt
 
 	class1.Merge(class2);
 	class2.Merge(class1);
 	class1.Merge(class2);
 	class1.Merge(class1);
-	cout << "class1 and 2 Merged: " << class1 << endl;
+	cout << "class1 and 2 Merged: " << class1 << endl; // Line 4 on output.txt
 
 	class1.Remove(c4, c11);
 	class1.Remove(c5, c11);
 	class1.Remove(c11, c11);
 	if (class1.Remove(c1, c11))
 	{
-		cout << "Removed from class1, student " << c11 << endl;
+		cout << "Removed from class1, student " << c11 << endl; // Line 5 on output.txt
 	}
-	cout << "class1: " << class1 << endl;
+	cout << "class1: " << class1 << endl; // Line 6 on output.txt
 
 	soccer.Insert(&c6);
 	soccer.Insert(&c4);
 	soccer.Insert(&c9);
-	cout << "soccer: " << soccer << endl;
+	cout << "soccer: " << soccer << endl; // Line 7 on output.txt
 	soccer += class1;
-	cout << "soccer += class1 : " << soccer << endl;
+	cout << "soccer += class1 : " << soccer << endl; // Line 8 on output.txt
 
 	List342<Child> football = soccer;
 	if (football == soccer)
 	{
-		cout << "football: " << football << endl;
+		cout << "football: " << football << endl; // Line 9 on output.txt
 	}
 	if (football.Peek(c6, c11))
 	{
-		cout << c11 << " is on the football team" << endl;
+		cout << c11 << " is on the football team" << endl; // Line 10 in output.txt
 	}
 	soccer.DeleteList();
 	List342<int> numbers;
 	numbers.Insert(&a);
 	numbers.Insert(&b);
 	numbers.Insert(&c);
-	cout << "These are the numbers: " << numbers << endl;
+	cout << "These are the numbers: " << numbers << endl; // Line 11 on output.txt
 	numbers.DeleteList();
 }
-*/
