@@ -33,11 +33,11 @@ public:
 	int Size() const;
 	/* OPERATOR OVERLOADING */
 	friend ostream& operator<<(ostream& outstream, const List342<T> rhs_list);
-	List342<T>& operator=(const List342<T>& rhs_list);           // Performs Deep Copy of two sorted lists
-	bool operator==(const List342<T>& rhs_list);                //  Equality comparison
-	bool operator!=(const List342<T>& rhs_list);               //   Inequality comparison
-	List342<T>& operator+=(const List342<T>& rhs_list);       //    Returns a reference to the lhs list (sorted)
-	List342<T> operator+(const List342<T>& rhs_list) const;  //     Returns a new list (sorted)
+	bool operator==(const List342<T>& rhs_list);                 //  Equality comparison
+	bool operator!=(const List342<T>& rhs_list);                //   Inequality comparison
+	List342<T>& operator=(const List342<T>& rhs_list);         //    Performs Deep Copy of two sorted lists
+	List342<T>& operator+=(const List342<T>& rhs_list);       //     Returns a reference to the lhs list (sorted)
+	List342<T> operator+(const List342<T>& rhs_list) const;  //      Returns a new list (sorted)
 private:
 	Node<T>* head_ptr_;
 };
@@ -51,10 +51,10 @@ List342<T>::List342()
 }
 
 template <class T>
-List342<T>::List342(const List342<T> & input_list)
+List342<T>::List342(const List342<T> & parent_list)
 {
 	this->head_ptr_ = nullptr;
-	*this = input_list;
+	*this = parent_list;
 }
 
 template <class T>
