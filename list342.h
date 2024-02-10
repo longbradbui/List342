@@ -6,11 +6,7 @@
 using namespace std;
 
 /* CONTRACT DECLARATION */
-/* Node Struct */
 
-
-
-/* List342 Class */
 template <class T>
 class List342
 {
@@ -75,7 +71,40 @@ List342<T>::~List342()
 template <class T> 
 bool List342<T>::BuildList(string file_name)
 {
-
+    // Open the file for reading
+    ifstream my_file;
+    // If the file name is empty or invalid input, print an error message then return
+    if (file_name.size() <= 0)
+    {
+        cerr << "Invalid file name. Please try again. \n";
+        return false;
+    }
+    my_file.open(file_name);
+    // If the file cannot be opened, print an error message then return 
+    if (!my_file.is_open())
+    {
+        cerr << "File: " << file_name << " cannot be opened. Please try again.\n";
+        return false;
+    }
+    // Instantiate a boolean flag to keep track of the status
+    bool end_of_file = false;
+    // Allocate memory for reading data from the file
+    T* file_reader = new T;
+    while (!end_of_file)
+    {
+        my_file >> *file_reader;
+        Insert(file_reader);
+    }
+    // The end of the file has been reached
+    if (my_file.eof())
+    {
+        end_of_file = true;
+        delete file_reader;
+        file_reader = nullptr;
+    }
+    // Close the file
+    my_file.close();
+    return true;
 }
 
 template <class T>
@@ -120,10 +149,10 @@ bool List342<T>::Insert(T* obj)
         return false;
     }
     insert_node->next = current_node;
+    // Assure that the previous node cannot point to null reference
     if (previous_node != nullptr)
     {
         previous_node->next = insert_node;
     }
-
     return true;
 }
