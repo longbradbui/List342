@@ -68,6 +68,20 @@ List342<T>::~List342()
 }
 
 /* ACTION IMPLEMENTATION */
+template <class T>
+int List342<T>::Size() const
+{
+    int size = 0;
+    // Node pointer current node points to the same location with head_ptr
+    Node* current_node = head_ptr_;
+    while (current_node != nullptr)
+    {
+        size++;
+        current_node = current_node->next; // Continuously move towards the end of the list
+    }
+    return size;
+}
+
 template <class T> 
 bool List342<T>::BuildList(string file_name)
 {
