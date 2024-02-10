@@ -1,6 +1,3 @@
-// program3_description_code.cpp : This file contains the 'main' function. Program execution begins and ends there.
-
-
 #include <iostream>
 #include "list342.h"
 #include "child.h"

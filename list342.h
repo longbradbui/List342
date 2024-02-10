@@ -7,18 +7,19 @@ using namespace std;
 
 /* CONTRACT DECLARATION */
 /* Node Struct */
-template<class T>
-struct Node
-{
-	T* data;     // A pointer to the data value
-	Node* next; //  A pointer to the next Node 
-}; 
+
+
 
 /* List342 Class */
 template <class T>
 class List342
 {
 public:
+	struct Node
+	{
+		T* data = nullptr;     // A pointer to the data value
+		Node* next = nullptr; //  A pointer to the next Node 
+	};
 	/* CONSTRUCTOR and DESTRUCTOR */
 	List342();                                  // Default Constructor
 	List342(string file_name);                 //  Parameterized Contructor: Read from file
@@ -40,7 +41,7 @@ public:
 	List342<T>& operator+=(const List342<T>& rhs_list);       //     Returns a reference to the lhs list (sorted)
 	List342<T> operator+(const List342<T>& rhs_list) const;  //      Returns a new list (sorted)
 private:
-	Node<T>* head_ptr_;
+	Node* head_ptr_ = nullptr;
 };
 #endif
 
@@ -76,5 +77,47 @@ bool List342<T>::BuildList(string file_name)
 {
 
 }
+
+template <class T>
+bool List342<T>::Insert(T* obj)
+{
+    if (obj == nullptr)
+    {
+        return false;
+    }
+    if (head_ptr_ == nullptr)
+    {
+        head_ptr_ = new Node();
+        head_ptr_->data = new T(*obj);
+        return true;
+    }
+    Node* insert_node = new Node();
+    insert_node->data = new T(*obj);
+    if (*insert_node->data < *head_ptr_->data)
+    {
+        insert_node->next = head_ptr_;
+        head_ptr_ = insert_node;
+        return true;
+    }
+    Node* current_node = head_ptr_;
+    Node* previous_node = nullptr;
+    while ((current_node->next != nullptr) && (*current_node->data < *insert_node->data))
+    {
+        previous_node = current_node;
+        current_node = current_node->next;
+    }
+    if (previous_node != nullptr && *previous_node->data == *insert_node->data)
+    {
+        delete insert_node;
+        return false;
+    }
+    insert_node->next = current_node;
+    if (previous_node != nullptr)
+    {
+        previous_node->next = insert_node;
+    }
+    return true;
+}
+
 
 
