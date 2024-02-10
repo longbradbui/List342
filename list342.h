@@ -170,3 +170,45 @@ bool List342<T>::Insert(T* obj)
     }
     return true;
 }
+
+template <class T>
+bool List342<T>::Remove(T target, T& result)
+{
+    // If head pointer is pointing to null reference 
+    if (head_ptr_ == nullptr)
+    {
+        return false;
+    }
+    // If the target value is at the beginning of the list
+    Node* current_node = head_ptr_;
+    if (*(head_ptr_->data) == (target))
+    {
+        head_ptr_ = head_ptr_->next;
+        result = *(current_node->data);
+        delete current_node;
+        return true;
+    }
+    // If the target is located after the first Node 
+    else
+    {
+        Node* previous_node = nullptr;
+        // Continuously move towards the end of the list
+        while ((current_node != nullptr) && *(current_node->data) != target)
+        {
+            previous_node = current_node;
+            current_node = current_node->next;
+        }
+        // If traversing till null but have not found the target, return
+        if (current_node == nullptr)
+        {
+            return false;
+        }
+        else
+        {
+            result = *(current_node->data);
+            previous_node->next = current_node->next;
+            delete current_node;
+            return true;
+        }
+    }
+}
