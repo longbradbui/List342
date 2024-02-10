@@ -212,3 +212,33 @@ bool List342<T>::Remove(T target, T& result)
         }
     }
 }
+template <class T>
+bool List342<T>::Peek(T target, T& result) const
+{
+    // If head pointer is pointing to null reference
+    if (head_ptr_ == nullptr)
+    {
+        return false;
+    }
+    // If target is at the beginning of the list 
+    if (*(head_ptr_->data) == target)
+    {
+        result = *(head_ptr_->data);
+        return true;
+    }
+    // If target is located after the first Node
+    Node* current_node = head_ptr_;
+    while (current_node != nullptr)
+    {
+        if (*(current_node->data) == target)
+        {
+            result = *(current_node->data);
+            return true;
+        }
+        else
+        {
+            current_node = current_node->next;
+        }
+    }
+    return false;
+}
