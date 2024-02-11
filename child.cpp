@@ -32,7 +32,6 @@ void Child::set_last_name(const string& name)
 {
 	last_name_ = name;
 }
-// Operator Overloads
 bool Child::operator==(const Child& child) const
 {
 	return ((first_name_ == child.first_name_) &&
@@ -45,7 +44,6 @@ bool Child::operator!=(const Child& child) const
 }
 bool Child::operator<(const Child& child) const
 {
-	//Compare last names, then first names, then age.
 	if (last_name_ < child.last_name_)
 	{
 		return true;

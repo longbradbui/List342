@@ -16,7 +16,6 @@ public:
 	int age() const;
 	void set_first_name(const string&);
 	void set_last_name(const string&);
-	//Operator Overloads
 	bool operator<(const Child&) const;
 	bool operator<=(const Child&) const;
 	bool operator>=(const Child&) const;

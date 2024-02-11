@@ -38,11 +38,11 @@ int main()
 	class2.Insert(&c10);
 	cout << "Class2: " << class2 << endl; // Line 3 on output.txt
 
-	class1.Merge(class2);
-	class2.Merge(class1);
-	class1.Merge(class2);
-	class1.Merge(class1);
-	cout << "class1 and 2 Merged: " << class1 << endl; // Line 4 on output.txt
+	//class1.Merge(class2);
+	//class2.Merge(class1);
+	//class1.Merge(class2);
+	//class1.Merge(class1);
+	//cout << "class1 and 2 Merged: " << class1 << endl; // Line 4 on output.txt
 
 	class1.Remove(c4, c11);
 	class1.Remove(c5, c11);

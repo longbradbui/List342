@@ -69,6 +69,17 @@ List342<T>::~List342()
 
 /* ACTION IMPLEMENTATION */
 template <class T>
+ostream& operator<<(ostream& outstream, const List342<T>& rhs_list)
+{
+    typename List342<T>::Node* current_node = rhs_list.head_ptr_; // typename is needed for dependent types
+    while (current_node != nullptr) {
+        outstream << *(current_node->data); // Assuming T has "<<" operator defined
+        current_node = current_node->next;
+    }
+    return outstream;
+}
+
+template <class T>
 int List342<T>::Size() const
 {
     int size = 0;
@@ -206,7 +217,10 @@ bool List342<T>::Remove(T target, T& result)
         else
         {
             result = *(current_node->data);
-            previous_node->next = current_node->next;
+            if (previous_node != nullptr)
+            {
+                 previous_node->next = current_node->next;
+            }          
             delete current_node;
             return true;
         }
