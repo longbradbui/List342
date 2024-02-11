@@ -212,6 +212,7 @@ bool List342<T>::Remove(T target, T& result)
         }
     }
 }
+
 template <class T>
 bool List342<T>::Peek(T target, T& result) const
 {
@@ -241,4 +242,16 @@ bool List342<T>::Peek(T target, T& result) const
         }
     }
     return false;
+}
+
+template <class T>
+void List342<T>::DeleteList() 
+{
+    while (head_ptr_ != nullptr)
+    {
+        Node* current_node = head_ptr_;
+        head_ptr_ = head_ptr_->next;
+        delete current_node->data;
+        delete current_node;
+    }
 }
