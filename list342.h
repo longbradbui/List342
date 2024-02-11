@@ -68,16 +68,6 @@ List342<T>::~List342()
 }
 
 /* ACTION IMPLEMENTATION */
-template <class T>
-ostream& operator<<(ostream& outstream, const List342<T>& rhs_list)
-{
-    typename List342<T>::Node* current_node = rhs_list.head_ptr_; // typename is needed for dependent types
-    while (current_node != nullptr) {
-        outstream << *(current_node->data); // Assuming T has "<<" operator defined
-        current_node = current_node->next;
-    }
-    return outstream;
-}
 
 template <class T>
 int List342<T>::Size() const
@@ -228,6 +218,29 @@ bool List342<T>::Remove(T target, T& result)
 }
 
 template <class T>
+bool List342<T>::Merge(List342& list1)
+{
+    // If the lhs list or the rhs list is pointing to null reference, can't merge, return false;
+    if (list1.head_ptr_ == nullptr || this = &list1)
+    {
+        return false;
+    }
+    if (list1.head_ptr_ != nullptr && this->head_ptr_ == nullptr)
+    {
+        this->head_ptr_ = list1.head_ptr_;
+        list1.head_ptr_ = nullptr;
+        return true;
+    }
+    Node* lhs_current_node = this->head_ptr_;
+    Node* rhs_current_node = list.head_ptr_;
+    Node* previous_node = nullptr;
+    while (lhs_current_node != null && rhs_current_node != nullptr)
+    {
+       
+    }
+}   
+
+template <class T>
 bool List342<T>::Peek(T target, T& result) const
 {
     // If head pointer is pointing to null reference
@@ -268,4 +281,15 @@ void List342<T>::DeleteList()
         delete current_node->data;
         delete current_node;
     }
+}
+
+template <class T>
+ostream& operator<<(ostream& outstream, const List342<T>& rhs_list)
+{
+    typename List342<T>::Node* current_node = rhs_list.head_ptr_; // typename is needed for dependent types
+    while (current_node != nullptr) {
+        outstream << *(current_node->data); // Assuming T has "<<" operator defined
+        current_node = current_node->next;
+    }
+    return outstream;
 }
