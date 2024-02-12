@@ -221,10 +221,11 @@ template <class T>
 bool List342<T>::Merge(List342& list1)
 {
     // If the lhs list or the rhs list is pointing to null reference, can't merge, return false;
-    if (list1.head_ptr_ == nullptr || this = &list1)
+    if (this->head_ptr_ == nullptr ||list1.head_ptr_ == nullptr || this == &list1)
     {
         return false;
     }
+    // If the lhs list is pointing to null reference but list1 is not, points to list1
     if (list1.head_ptr_ != nullptr && this->head_ptr_ == nullptr)
     {
         this->head_ptr_ = list1.head_ptr_;
@@ -232,11 +233,26 @@ bool List342<T>::Merge(List342& list1)
         return true;
     }
     Node* lhs_current_node = this->head_ptr_;
-    Node* rhs_current_node = list.head_ptr_;
+    Node* rhs_current_node = list1.head_ptr_;
     Node* previous_node = nullptr;
-    while (lhs_current_node != null && rhs_current_node != nullptr)
+    while (lhs_current_node != nullptr && rhs_current_node != nullptr)
     {
-       
+        if (*(rhs_current_node->data) == *(lhs_current_node->data))
+        {
+            Node* duplicate = rhs_current_node;
+            rhs_current_node = rhs_current_node->next;
+            delete duplicate;
+        }
+        else if (*(rhs_current_node->data) > *(lhs_current_node->data))
+        {
+            lhs_current_node = lhs_current_node->next;
+            previous_node = lhs_current_node;
+        }
+        else (*(rhs_current_node->data) < *(lhs_current_node->data))
+        {
+            Node* temporary = rhs_current_node->next;
+            rhs_current_node->next = lhs_current_node;
+        }
     }
 }   
 
