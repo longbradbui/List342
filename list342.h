@@ -221,7 +221,7 @@ template <class T>
 bool List342<T>::Merge(List342& list1)
 {
     // If the lhs list or the rhs list is pointing to null reference, or same address
-    if (this->head_ptr_ == nullptr ||list1.head_ptr_ == nullptr || this == &list1)
+    if (this->head_ptr_ == nullptr || list1.head_ptr_ == nullptr || this == &list1)
     {
         return false;
     }
@@ -253,7 +253,7 @@ bool List342<T>::Merge(List342& list1)
             lhs_current_node = lhs_current_node->next;
         }
         // If node from list1 is smaller than node from the calling list
-        else (*(rhs_current_node->data) < *(lhs_current_node->data))
+        else // (*(rhs_current_node->data) < *(lhs_current_node->data))
         {
             // Append at the beginning of the calling list 
             if (previous_node == nullptr)
@@ -264,7 +264,7 @@ bool List342<T>::Merge(List342& list1)
                 rhs_current_node = list1.head_ptr_;
             }
             // Append somewhere in between previous node and current node of lhs list 
-            else (previous_node != nullptr)
+            else
             {
                 previous_node->next = rhs_current_node;
                 rhs_current_node = rhs_current_node->next;
@@ -281,7 +281,7 @@ bool List342<T>::Merge(List342& list1)
             // If the lhs list is empty, update the head pointer of lhs
             this->head_ptr_ = list1.head_ptr_;
         }
-        else (previous_node != nullptr)
+        else
         {
             // Otherwise, attach the remaining nodes from rhs to the end of lhs
             previous_node->next = rhs_current_node;
@@ -290,7 +290,8 @@ bool List342<T>::Merge(List342& list1)
         list1.head_ptr_ = nullptr;
     }
     return true;
-}   
+}
+
 
 template <class T>
 bool List342<T>::Peek(T target, T& result) const
