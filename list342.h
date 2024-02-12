@@ -220,36 +220,42 @@ bool List342<T>::Remove(T target, T& result)
 template <class T>
 bool List342<T>::Merge(List342& list1)
 {
-    // If the lhs list or the rhs list is pointing to null reference, can't merge, return false;
+    // If the lhs list or the rhs list is pointing to null reference, or same address
     if (this->head_ptr_ == nullptr ||list1.head_ptr_ == nullptr || this == &list1)
     {
         return false;
     }
-    // If the lhs list is pointing to null reference but list1 is not, points to list1
+    // If the lhs list is pointing to null reference but list1 is not
     if (list1.head_ptr_ != nullptr && this->head_ptr_ == nullptr)
     {
         this->head_ptr_ = list1.head_ptr_;
         list1.head_ptr_ = nullptr;
         return true;
     }
+    // Declare auxiliary pointers
     Node* lhs_current_node = this->head_ptr_;
     Node* rhs_current_node = list1.head_ptr_;
     Node* previous_node = nullptr;
+    Node* duplicate_node = nullptr;
     while (lhs_current_node != nullptr && rhs_current_node != nullptr)
     {
+        // If found duplicate values
         if (*(rhs_current_node->data) == *(lhs_current_node->data))
         {
-            Node* duplicate = rhs_current_node;
+            duplicate_node = rhs_current_node;
             rhs_current_node = rhs_current_node->next;
-            delete duplicate;
+            delete duplicate_node;
         }
+        // If node from list1 is greater than node from the calling list
         else if (*(rhs_current_node->data) > *(lhs_current_node->data))
         {
             previous_node = lhs_current_node;
             lhs_current_node = lhs_current_node->next;
         }
+        // If node from list1 is smaller than node from the calling list
         else (*(rhs_current_node->data) < *(lhs_current_node->data))
         {
+            // Append at the beginning of the calling list 
             if (previous_node == nullptr)
             {
                 list1.head_ptr_ = rhs_current_node->next;
@@ -257,7 +263,8 @@ bool List342<T>::Merge(List342& list1)
                 this->head_ptr_ = rhs_current_node;
                 rhs_current_node = list1.head_ptr_;
             }
-            else
+            // Append somewhere in between previous node and current node of lhs list 
+            else (previous_node != nullptr)
             {
                 previous_node->next = rhs_current_node;
                 rhs_current_node = rhs_current_node->next;
@@ -266,6 +273,23 @@ bool List342<T>::Merge(List342& list1)
             }
         }
     }
+    // Attach remaining nodes from rhs to the end of lhs
+    if (rhs_current_node != nullptr)
+    {
+        if (previous_node == nullptr)
+        {
+            // If the lhs list is empty, update the head pointer of lhs
+            this->head_ptr_ = list1.head_ptr_;
+        }
+        else (previous_node != nullptr)
+        {
+            // Otherwise, attach the remaining nodes from rhs to the end of lhs
+            previous_node->next = rhs_current_node;
+        }
+        // Empty rhs list
+        list1.head_ptr_ = nullptr;
+    }
+    return true;
 }   
 
 template <class T>
@@ -302,6 +326,7 @@ bool List342<T>::Peek(T target, T& result) const
 template <class T>
 void List342<T>::DeleteList() 
 {
+    // Continuously delete data and node itself
     while (head_ptr_ != nullptr)
     {
         Node* current_node = head_ptr_;
@@ -314,7 +339,8 @@ void List342<T>::DeleteList()
 template <class T>
 ostream& operator<<(ostream& outstream, const List342<T>& rhs_list)
 {
-    typename List342<T>::Node* current_node = rhs_list.head_ptr_; // typename is needed for dependent types
+    // typename is needed for dependent types
+    typename List342<T>::Node* current_node = rhs_list.head_ptr_;
     while (current_node != nullptr) {
         outstream << *(current_node->data); // Assuming T has "<<" operator defined
         current_node = current_node->next;
