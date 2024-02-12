@@ -245,13 +245,25 @@ bool List342<T>::Merge(List342& list1)
         }
         else if (*(rhs_current_node->data) > *(lhs_current_node->data))
         {
-            lhs_current_node = lhs_current_node->next;
             previous_node = lhs_current_node;
+            lhs_current_node = lhs_current_node->next;
         }
         else (*(rhs_current_node->data) < *(lhs_current_node->data))
         {
-            Node* temporary = rhs_current_node->next;
-            rhs_current_node->next = lhs_current_node;
+            if (previous_node == nullptr)
+            {
+                list1.head_ptr_ = rhs_current_node->next;
+                rhs_current_node->next = this->head_ptr_;
+                this->head_ptr_ = rhs_current_node;
+                rhs_current_node = list1.head_ptr_;
+            }
+            else
+            {
+                previous_node->next = rhs_current_node;
+                rhs_current_node = rhs_current_node->next;
+                previous_node->next->next = lhs_current_node;
+                previous_node = previous_node->next;
+            }
         }
     }
 }   
