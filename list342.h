@@ -239,7 +239,6 @@ bool List342<T>::Merge(List342 &list1)
         list1.head_ptr_ = nullptr;
         return true;
     }
-    // Declare auxiliary pointers
     Node<T> *lhs_current_node = this->head_ptr_;
     Node<T> *rhs_current_node = list1.head_ptr_;
     Node<T> *previous_node = nullptr;
@@ -262,7 +261,6 @@ bool List342<T>::Merge(List342 &list1)
                 this->head_ptr_ = rhs_current_node;
                 rhs_current_node = list1.head_ptr_;
             }
-            // Append somewhere in between previous node and current node of lhs list
             else
             {
                 previous_node->next = rhs_current_node;
@@ -271,7 +269,6 @@ bool List342<T>::Merge(List342 &list1)
                 previous_node = previous_node->next;
             }
         }
-        // If found duplicate values
         else
         {
             Node<T> *duplicate_node = rhs_current_node;
@@ -293,7 +290,6 @@ bool List342<T>::Merge(List342 &list1)
             // Otherwise, attach the remaining nodes from rhs to the end of lhs
             previous_node->next = rhs_current_node;
         }
-        // Empty rhs list
         list1.head_ptr_ = nullptr;
     }
     return true;
