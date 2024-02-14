@@ -392,6 +392,12 @@ List342<T> &List342<T>::operator=(const List342<T> &rhs_list)
     return *this;
 }
 
+template <class T>
+bool List342<T>::operator!=(const List342<T> &rhs_list) const
+{
+    return !(*this == rhs_list);
+}
+
 // template <class T>
 // List342<T> &List342<T>::operator+=(const List342<T> &rhs_list)
 // {
