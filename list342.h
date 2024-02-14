@@ -2,7 +2,6 @@
 #define LIST_342_H_
 #include <iostream>
 #include <fstream>
-#include <vector>
 #include <string>
 using namespace std;
 
@@ -84,7 +83,7 @@ List342<T>::List342(string file_name)
 template <class T>
 List342<T>::~List342()
 {
-    DeleteList();
+    this->DeleteList();
 }
 
 /* ACTION IMPLEMENTATION */
@@ -365,17 +364,6 @@ bool List342<T>::operator==(const List342<T> &rhs_list) const
 }
 
 template <class T>
-List342<T> &List342<T>::operator+=(const List342<T> &rhs_list)
-{
-    return *this;
-}
-
-// template <class T>
-// List342<T> List342<T>::operator+(const List342<T> &rhs_list)
-// {
-// }
-
-template <class T>
 List342<T> &List342<T>::operator=(const List342<T> &rhs_list)
 {
     // If rhs list is empty or they both pointing to the same address
@@ -403,3 +391,14 @@ List342<T> &List342<T>::operator=(const List342<T> &rhs_list)
     }
     return *this;
 }
+
+// template <class T>
+// List342<T> &List342<T>::operator+=(const List342<T> &rhs_list)
+// {
+//     return *this;
+// }
+
+// template <class T>
+// List342<T> List342<T>::operator+(const List342<T> &rhs_list)
+// {
+// }
