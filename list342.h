@@ -32,6 +32,7 @@ class List342
         }
         return outstream;
     }
+
 public:
     List342();                              // Default Constructor
     List342(string file_name);              // Parameterized Contructor: Read from file
@@ -71,7 +72,7 @@ template <class T>
 List342<T>::List342(const List342<T> &parent_list)
 {
     this->head_ptr_ = nullptr;
-    *this = parent_list;
+    *(this) = parent_list;
 }
 
 template <class T>
@@ -92,12 +93,11 @@ template <class T>
 int List342<T>::Size() const
 {
     int size = 0;
-    // Node pointer current node points to the same location with head_ptr
     Node<T> *current_node = head_ptr_;
     while (current_node != nullptr)
     {
         size++;
-        current_node = current_node->next; // Continuously move towards the end of the list
+        current_node = current_node->next;
     }
     return size;
 }
@@ -173,7 +173,7 @@ bool List342<T>::Insert(T *obj)
         current_node = current_node->next;
     }
     // Check for duplicates
-    if (current_node->next != nullptr && *(current_node->next->data) == *(obj))
+    if ((current_node->next != nullptr) && *(current_node->next->data) == *(obj))
     {
         return false;
     }
@@ -196,25 +196,26 @@ bool List342<T>::Remove(T target, T &result)
     // First in line
     if (*(head_ptr_->data) == (target))
     {
-        Node<T> *temp = head_ptr_;
+        Node<T> *temporary = head_ptr_;
         head_ptr_ = head_ptr_->next;
-        result = *(temp->data);
-        delete temp->data;
-        delete temp;
+        result = *(temporary->data);
+        delete temporary->data;
+        delete temporary;
         return true;
     }
     // All others
     Node<T> *current_node = head_ptr_;
     // Continuously move towards the end of the list
-    while (current_node->next != nullptr && *(current_node->next->data) < (target))
+    while ((current_node->next != nullptr) && *(current_node->next->data) < (target))
     {
         current_node = current_node->next;
     }
-    // If traversing till null but have not found the target, return
+    // If traversing till nullptr but have not found the target
     if (current_node->next == nullptr || *(current_node->next->data) != (target))
     {
         return false;
     }
+    // Remove somewhere in between
     Node<T> *temp = current_node->next;
     current_node->next = current_node->next->next;
     result = *(temp->data);
@@ -226,13 +227,13 @@ bool List342<T>::Remove(T target, T &result)
 template <class T>
 bool List342<T>::Merge(List342 &list1)
 {
-    // Empty List, or same address
-    if (this->head_ptr_ == nullptr || list1.head_ptr_ == nullptr || this == &list1)
+    // Empty List or Same address
+    if ((this->head_ptr_ == nullptr) || (list1.head_ptr_ == nullptr) || (this == &list1))
     {
         return false;
     }
-    // If the lhs list is pointing to null reference but list1 is not
-    if (list1.head_ptr_ != nullptr && this->head_ptr_ == nullptr)
+    // If the calling list is empty
+    if ((list1.head_ptr_ != nullptr) && (this->head_ptr_ == nullptr))
     {
         this->head_ptr_ = list1.head_ptr_;
         list1.head_ptr_ = nullptr;
@@ -242,24 +243,16 @@ bool List342<T>::Merge(List342 &list1)
     Node<T> *lhs_current_node = this->head_ptr_;
     Node<T> *rhs_current_node = list1.head_ptr_;
     Node<T> *previous_node = nullptr;
-    Node<T> *duplicate_node = nullptr;
-    while (lhs_current_node != nullptr && rhs_current_node != nullptr)
+    while ((lhs_current_node != nullptr) && (rhs_current_node != nullptr))
     {
-        // If found duplicate values
-        if (*(rhs_current_node->data) == *(lhs_current_node->data))
-        {
-            duplicate_node = rhs_current_node;
-            rhs_current_node = rhs_current_node->next;
-            delete duplicate_node;
-        }
         // If node from list1 is greater than node from the calling list
-        else if (*(rhs_current_node->data) > *(lhs_current_node->data))
+        if (*(rhs_current_node->data) > *(lhs_current_node->data))
         {
             previous_node = lhs_current_node;
             lhs_current_node = lhs_current_node->next;
         }
         // If node from list1 is smaller than node from the calling list
-        else // (*(rhs_current_node->data) < *(lhs_current_node->data))
+        else if (*(rhs_current_node->data) < *(lhs_current_node->data))
         {
             // Append at the beginning of the calling list
             if (previous_node == nullptr)
@@ -278,7 +271,15 @@ bool List342<T>::Merge(List342 &list1)
                 previous_node = previous_node->next;
             }
         }
+        // If found duplicate values
+        else
+        {
+            Node<T> *duplicate_node = rhs_current_node;
+            rhs_current_node = rhs_current_node->next;
+            delete duplicate_node;
+        }
     }
+
     // Attach remaining nodes from rhs to the end of lhs
     if (rhs_current_node != nullptr)
     {
@@ -301,22 +302,22 @@ bool List342<T>::Merge(List342 &list1)
 template <class T>
 bool List342<T>::Peek(T target, T &result) const
 {
-    // If head pointer is pointing to null reference
+    // Empty List
     if (head_ptr_ == nullptr)
     {
         return false;
     }
-    // If target is at the beginning of the list
-    if (*(head_ptr_->data) == target)
+    // First in line
+    if (*(head_ptr_->data) == (target))
     {
         result = *(head_ptr_->data);
         return true;
     }
-    // If target is located after the first Node
+    // All others
     Node<T> *current_node = head_ptr_;
     while (current_node != nullptr)
     {
-        if (*(current_node->data) == target)
+        if (*(current_node->data) == (target))
         {
             result = *(current_node->data);
             return true;
