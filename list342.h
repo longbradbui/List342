@@ -53,7 +53,7 @@ public:
     template <class U>
     friend ostream &operator<<(ostream &outstream, const List342<T> &rhs_list);
     template <class U>
-    friend istream &operator<<(istream &instream, List342<T> &rhs_list);
+    friend istream &operator>>(istream &instream, List342<T> &rhs_list);
 
 private:
     Node<T> *head_ptr_;
@@ -280,6 +280,7 @@ bool List342<T>::Merge(List342 &list1)
             delete duplicate_node;
         }
     }
+
     // Attach remaining nodes from rhs to the end of lhs
     if (rhs_current_node != nullptr)
     {
@@ -333,13 +334,14 @@ bool List342<T>::Peek(T target, T &result) const
 template <class T>
 void List342<T>::DeleteList()
 {
-    Node<T> *current = head_ptr_;
-    while (current != nullptr)
+    // Continuously delete data and node itself
+    Node<T> *current_node = head_ptr_;
+    while (current_node != nullptr)
     {
-        Node<T> *next = current->next;
-        delete current->data; // Deallocate the data
-        delete current;       // Deallocate the node
-        current = next;
+        Node<T> *next_node = current_node->next;
+        delete current_node->data; // Deallocate the data
+        delete current_node;       // Deallocate the node
+        current_node = next_node;
     }
     head_ptr_ = nullptr;
 }
@@ -363,6 +365,12 @@ bool List342<T>::operator==(const List342<T> &rhs_list) const
         }
     }
     return true;
+}
+
+template <class T>
+bool List342<T>::operator!=(const List342<T> &rhs_list) const
+{
+    return !(*this == rhs_list);
 }
 
 template <class T>
@@ -395,18 +403,70 @@ List342<T> &List342<T>::operator=(const List342<T> &rhs_list)
 }
 
 template <class T>
-bool List342<T>::operator!=(const List342<T> &rhs_list) const
+List342<T> &List342<T>::operator+=(const List342<T> &rhs_list)
 {
-    return !(*this == rhs_list);
+    if ((this == &rhs_list) || (rhs_list.head_ptr_ == nullptr))
+    {
+        return *this;
+    }
+    if ((this->head_ptr_ == nullptr) && (rhs_list.head_ptr_ != nullptr))
+    {
+        *(this) = rhs_list;
+        return *this;
+    }
+    if ((this->head_ptr_ == nullptr) && (rhs_list.head_ptr_ == nullptr))
+    {
+        return *this;
+    }
+    Node<T> *source = rhs_list.head_ptr_;
+    Node<T> *destination = this->head_ptr_;
+    // Copy over the first node
+    if (*(destination ->data) > *(source->data))
+    {
+        this->head_ptr_ = new Node<T>();
+        head_ptr_->data = new T(*(source->data));
+        head_ptr_->next = destination;
+        destination = head_ptr_;
+        source = source->next;
+    }
+    // loop and copy over
+    while ((source != nullptr) && (destination->next) != nullptr)
+    {
+        if (*(source->data) == *(destination->next->data))
+        {
+            source = source->next;
+        }
+        else if (*(source->data) < *(destination->next->data))
+        {
+            Node<T> *insert_node = new Node<T>();
+            insert_node->data = new T(*(source->data));
+            insert_node->next = destination->next;
+            destination->next = insert_node;
+            destination = insert_node;
+            source = source->next;
+        }
+        else
+        {
+            destination = destination->next;
+        }
+    }
+    if (destination->next == nullptr)
+    {
+        while (source != nullptr)
+        {
+            destination->next = new Node<T>();
+            destination = destination->next;
+            destination->data = new T(*(source->data));
+            source = source->next;
+        }
+    }
+    return *this;
 }
 
-// template <class T>
-// List342<T> &List342<T>::operator+=(const List342<T> &rhs_list)
-// {
-//     return *this;
-// }
-
-// template <class T>
-// List342<T> List342<T>::operator+(const List342<T> &rhs_list)
-// {
-// }
+template <class T>
+List342<T> List342<T>::operator+(const List342<T> &rhs_list) const
+{
+    List342<T> result = *this;
+    result += rhs_list;
+    return result;
+}
