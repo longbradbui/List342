@@ -144,7 +144,7 @@ bool List342<T>::BuildList(string file_name)
 template <class T>
 bool List342<T>::Insert(T *obj)
 {
-    // Null object passed in
+    // Object passed is pointing to null reference
     if (obj == nullptr)
     {
         return false;
@@ -168,12 +168,12 @@ bool List342<T>::Insert(T *obj)
     }
     // All others
     Node<T> *current_node = head_ptr_;
-    while ((current_node->next != nullptr) && *(current_node->next->data) < *(obj))
+    while ((current_node->next != nullptr) && (*(current_node->next->data) < *(obj)))
     {
         current_node = current_node->next;
     }
     // Check for duplicates
-    if ((current_node->next != nullptr) && *(current_node->next->data) == *(obj))
+    if ((current_node->next != nullptr) && (*(current_node->next->data) == *(obj)))
     {
         return false;
     }
@@ -206,12 +206,12 @@ bool List342<T>::Remove(T target, T &result)
     // All others
     Node<T> *current_node = head_ptr_;
     // Continuously move towards the end of the list
-    while ((current_node->next != nullptr) && *(current_node->next->data) < (target))
+    while ((current_node->next != nullptr) && (*(current_node->next->data) < (target)))
     {
         current_node = current_node->next;
     }
     // If traversing till nullptr but have not found the target
-    if (current_node->next == nullptr || *(current_node->next->data) != (target))
+    if ((current_node->next == nullptr) || (*(current_node->next->data) != (target)))
     {
         return false;
     }
@@ -227,8 +227,13 @@ bool List342<T>::Remove(T target, T &result)
 template <class T>
 bool List342<T>::Merge(List342 &list1)
 {
-    // Empty List or Same address
-    if ((this->head_ptr_ == nullptr) || (list1.head_ptr_ == nullptr) || (this == &list1))
+    // Empty list1 passed in, or same address
+    if ((list1.head_ptr_ == nullptr) || (this == &list1))
+    {
+        return false;
+    }
+    // If the two lists are empty
+    if ((this->head_ptr_ == nullptr) && (list1.head_ptr_ == nullptr))
     {
         return false;
     }
@@ -240,49 +245,48 @@ bool List342<T>::Merge(List342 &list1)
         return true;
     }
     // Declare auxiliary pointers
-    Node<T> *lhs_current_node = this->head_ptr_;
-    Node<T> *rhs_current_node = list1.head_ptr_;
+    Node<T> *destination = this->head_ptr_;
+    Node<T> *source = list1.head_ptr_;
     Node<T> *previous_node = nullptr;
-    while ((lhs_current_node != nullptr) && (rhs_current_node != nullptr))
+    while ((destination != nullptr) && (source != nullptr))
     {
         // If node from list1 is greater than node from the calling list
-        if (*(rhs_current_node->data) > *(lhs_current_node->data))
+        if (*(source->data) > *(destination->data))
         {
-            previous_node = lhs_current_node;
-            lhs_current_node = lhs_current_node->next;
+            previous_node = destination;
+            destination = destination->next;
         }
         // If node from list1 is smaller than node from the calling list
-        else if (*(rhs_current_node->data) < *(lhs_current_node->data))
+        else if (*(source->data) < *(destination->data))
         {
             // Append at the beginning of the calling list
             if (previous_node == nullptr)
             {
-                list1.head_ptr_ = rhs_current_node->next;
-                rhs_current_node->next = this->head_ptr_;
-                this->head_ptr_ = rhs_current_node;
-                rhs_current_node = list1.head_ptr_;
+                list1.head_ptr_ = source->next;
+                source->next = this->head_ptr_;
+                this->head_ptr_ = source;
+                source = list1.head_ptr_;
             }
             // Append somewhere in between previous node and current node of lhs list
             else
             {
-                previous_node->next = rhs_current_node;
-                rhs_current_node = rhs_current_node->next;
-                previous_node->next->next = lhs_current_node;
+                previous_node->next = source;
+                source = source->next;
+                previous_node->next->next = destination;
                 previous_node = previous_node->next;
             }
         }
         // If found duplicate values
         else
         {
-            Node<T> *duplicate_node = rhs_current_node;
-            rhs_current_node = rhs_current_node->next;
+            Node<T> *duplicate_node = source;
+            source = source->next;
             delete duplicate_node->data;
             delete duplicate_node;
         }
     }
-
-    // Attach remaining nodes from rhs to the end of lhs
-    if (rhs_current_node != nullptr)
+    // Attach remaining nodes from source to the end of destination
+    if (source != nullptr)
     {
         if (previous_node == nullptr)
         {
@@ -292,7 +296,7 @@ bool List342<T>::Merge(List342 &list1)
         else
         {
             // Otherwise, attach the remaining nodes from rhs to the end of lhs
-            previous_node->next = rhs_current_node;
+            previous_node->next = source;
         }
         // Empty rhs list
         list1.head_ptr_ = nullptr;
@@ -421,15 +425,14 @@ List342<T> &List342<T>::operator+=(const List342<T> &rhs_list)
     Node<T> *source = rhs_list.head_ptr_;
     Node<T> *destination = this->head_ptr_;
     // Copy over the first node
-    if (*(destination ->data) > *(source->data))
+    if (*(destination->data) > *(source->data))
     {
         this->head_ptr_ = new Node<T>();
         head_ptr_->data = new T(*(source->data));
         head_ptr_->next = destination;
-        destination = head_ptr_;
         source = source->next;
     }
-    // loop and copy over
+    // Loop and copy over
     while ((source != nullptr) && (destination->next) != nullptr)
     {
         if (*(source->data) == *(destination->next->data))
@@ -442,7 +445,6 @@ List342<T> &List342<T>::operator+=(const List342<T> &rhs_list)
             insert_node->data = new T(*(source->data));
             insert_node->next = destination->next;
             destination->next = insert_node;
-            destination = insert_node;
             source = source->next;
         }
         else
