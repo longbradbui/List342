@@ -21,7 +21,7 @@ class List342
     {
         if (rhs_list.head_ptr_ == nullptr)
         {
-            cerr << "Empty List" << endl;
+            cerr << "This is an empty list";
         }
         Node<T> *current = rhs_list.head_ptr_;
         while (current != nullptr)
@@ -105,39 +105,22 @@ int List342<T>::Size() const
 template <class T>
 bool List342<T>::BuildList(string file_name)
 {
-    // Open the file for reading
-    ifstream my_file;
-    // If the file name is empty or invalid input, print an error message then return
     if (file_name.size() <= 0)
     {
-        cerr << "Invalid file name. Please try again. \n";
         return false;
     }
-    my_file.open(file_name);
-    // If the file cannot be opened, print an error message then return
-    if (!my_file.is_open())
+    ifstream in_file;
+    in_file.open(file_name);
+    if (!in_file.is_open())
     {
-        cerr << "File: " << file_name << " cannot be opened. Please try again.\n";
         return false;
     }
-    // Instantiate a boolean flag to keep track of the status
-    bool end_of_file = false;
-    // Allocate memory for reading data from the file
-    T *file_reader = new T;
-    while (!end_of_file)
+    T temp;
+    while (!in_file.eof())
     {
-        my_file >> *(file_reader);
-        Insert(file_reader);
+        in_file >> temp;
+        Insert(&temp);
     }
-    // The end of the file has been reached
-    if (my_file.eof())
-    {
-        end_of_file = true;
-        delete file_reader;
-        file_reader = nullptr;
-    }
-    // Close the file
-    my_file.close();
     return true;
 }
 
@@ -147,6 +130,7 @@ bool List342<T>::Insert(T *obj)
     // Object passed is pointing to null reference
     if (obj == nullptr)
     {
+        cerr << "Cannot insert NULL data, please try again." << endl;
         return false;
     }
     // Empty List
@@ -158,13 +142,18 @@ bool List342<T>::Insert(T *obj)
         return true;
     }
     // First in Line
-    if (*(head_ptr_->data) >= *(obj))
+    if (*(head_ptr_->data) > *(obj))
     {
         Node<T> *insert_node = new Node<T>();
         insert_node->data = new T(*(obj));
         insert_node->next = head_ptr_;
         head_ptr_ = insert_node;
         return true;
+    }
+    // Check for duplication at beginning
+    if (*(head_ptr_->data) == *(obj))
+    {
+        return false;
     }
     // All others
     Node<T> *current_node = head_ptr_;
@@ -191,6 +180,7 @@ bool List342<T>::Remove(T target, T &result)
     // Empty List
     if (head_ptr_ == nullptr)
     {
+        cerr << "List in empty, please try again." << endl;
         return false;
     }
     // First in line
@@ -213,6 +203,7 @@ bool List342<T>::Remove(T target, T &result)
     // If traversing till nullptr but have not found the target
     if ((current_node->next == nullptr) || (*(current_node->next->data) != (target)))
     {
+        cerr << "Cannot find the item in the list, please try again." << endl;
         return false;
     }
     // Remove somewhere in between
@@ -227,14 +218,22 @@ bool List342<T>::Remove(T target, T &result)
 template <class T>
 bool List342<T>::Merge(List342 &list1)
 {
-    // Empty list1 passed in, or same address
-    if ((list1.head_ptr_ == nullptr) || (this == &list1))
-    {
-        return false;
-    }
     // If the two lists are empty
     if ((this->head_ptr_ == nullptr) && (list1.head_ptr_ == nullptr))
     {
+        cerr << "Cannot merge two empty lists, please try again." << endl;
+        return false;
+    }
+    // Empty list1 passed in
+    if ((list1.head_ptr_ == nullptr))
+    {
+        cerr << "Cannot merge with an empty list, please try again." << endl;
+        return false;
+    }
+    // Same address
+    if ((this == &list1))
+    {
+        cerr << "Two lists have the same address, please try again." << endl;
         return false;
     }
     // If the calling list is empty
@@ -430,6 +429,7 @@ List342<T> &List342<T>::operator+=(const List342<T> &rhs_list)
         this->head_ptr_ = new Node<T>();
         head_ptr_->data = new T(*(source->data));
         head_ptr_->next = destination;
+        destination = head_ptr_;
         source = source->next;
     }
     // Loop and copy over
@@ -452,6 +452,7 @@ List342<T> &List342<T>::operator+=(const List342<T> &rhs_list)
             destination = destination->next;
         }
     }
+    // If destitnation becomes empty while source is not
     if (destination->next == nullptr)
     {
         while (source != nullptr)
@@ -468,7 +469,7 @@ List342<T> &List342<T>::operator+=(const List342<T> &rhs_list)
 template <class T>
 List342<T> List342<T>::operator+(const List342<T> &rhs_list) const
 {
-    List342<T> result = *this;
+    List342<T> result = *(this);
     result += rhs_list;
     return result;
 }
