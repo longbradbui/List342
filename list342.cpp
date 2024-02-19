@@ -1,4 +1,5 @@
 #include <iostream>
+#include <string>
 #include "list342.h"
 #include "child.h"
 #include "rational.h"
@@ -130,7 +131,7 @@ int main()
 	rational_test2.Insert(&r8);
 	rational_test2.Insert(&r12);
 	cout << "Rational List #2: " << rational_test2 << endl;
-	cout << "Performing Deep Copy from List #2 to List #3 ..." << endl; 
+	cout << "Performing Deep Copy from List #2 to List #3 ..." << endl;
 	List342<Rational> rational_test3 = rational_test2;
 	cout << "Rational List #3: " << rational_test3 << endl;
 	cout << "Size of Rational List #0 [Before += operator]: " << rational_test.Size() << endl;
@@ -175,6 +176,49 @@ int main()
 	cout << "Size of Rational List #3 [After + operator]: " << rational_test3.Size() << endl;
 	cout << "Size of Rational List #4 [After + operator]: " << rational_test4.Size() << endl;
 	cout << "Final List: " << final_list << endl;
+	cout << "\n-- Unit Testing with String List -- " << endl;
+	// Test Case 1: Merging empty lists
+	List342<string> list1, list2;
+	list1 += list2;
+	cout << "Merged list after merging empty lists: " << list1 << endl;
+	// Test Case 2: Merging lists with one element
+	List342<string> list3, list4;
+	list3.Insert(new string("Apple"));
+	list4.Insert(new string("Banana"));
+	list3 += list4;
+	cout << "Merged list after merging lists with one element: " << list3 << endl;
+	// Test Case 3: Merging lists with duplicate elements
+	List342<string> list5, list6;
+	list5.Insert(new string("Apple"));
+	list5.Insert(new string("Orange"));
+	list6.Insert(new string("Apple"));
+	list6.Insert(new string("Grape"));
+	list5 += list6;
+	cout << "Merged list after merging lists with duplicate elements: " << list5 << endl;
+	// Test Case 4: Merging sorted lists
+	List342<string> list7, list8;
+	list7.Insert(new string("Apple"));
+	list7.Insert(new string("Banana"));
+	list8.Insert(new string("Grape"));
+	list8.Insert(new string("Orange"));
+	list7 += list8;
+	cout << "Merged list after merging sorted lists: " << list7 << endl;
+	// Test Case 5: Merging unsorted lists
+	List342<std::string> list9, list10;
+	list9.Insert(new string("Banana"));
+	list9.Insert(new string("Apple"));
+	list10.Insert(new string("Orange"));
+	list10.Insert(new string("Grape"));
+	list9 += list10;
+	cout << "Merged list after merging unsorted lists: " << list9 << endl;
+	// Test Case 6: Merging lists with null data
+	List342<string> list11, list12;
+	list11.Insert(nullptr);
+	list11.Insert(new string("Apple"));
+	list12.Insert(new string("Orange"));
+	list12.Insert(nullptr);
+	list11 += list12;
+	cout << "Merged list after merging lists with null data: " << list11 << endl;
 	cout << "\n-- Unit Testing with File Input -- " << endl;
 	List342<Child> child;
 	child.BuildList("child.txt");
